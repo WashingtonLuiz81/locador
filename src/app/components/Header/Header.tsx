@@ -17,6 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Input, PasswordInput } from '../Form'
 import { Button } from '../ui/button'
 import { loginSchema } from './schemas'
+import { useAuth } from '@/lib/auth'
 
 type LoginFormInputs = z.infer<typeof loginSchema>
 
@@ -24,6 +25,7 @@ const Header = () => {
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [loading, setLoading] = useState(false)
+  const { user, login, error } = useAuth()
 
   const toggleUserMenu = () => {
     setShowUserMenu(!showUserMenu)
@@ -46,8 +48,9 @@ const Header = () => {
     mode: 'onChange', // Validação em tempo real
   })
 
-  const onSubmit = (data: LoginFormInputs) => {
+  const onSubmit = async (data: LoginFormInputs) => {
     setLoading(true)
+    await login(data.username, data.password)
     console.log('Form data:', data)
     // Aqui você pode adicionar a lógica para o login
   }
