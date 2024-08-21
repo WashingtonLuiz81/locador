@@ -1,2 +1,2 @@
-export { Movie } from '../model/Movie'
-export { User } from '../model/User'
+export type { Movie } from '../model/Movie'
+export type { User } from '../model/User'
