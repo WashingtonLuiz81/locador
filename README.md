@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# **Locador** 🎬🍿  
+**A sua locadora Online**
 
-## Getting Started
+## 📚 **Projeto**
 
-First, run the development server:
+**Locador** é uma aplicação de listagem de filmes para alugar. A aplicação utiliza a API pública de filmes para buscar detalhes dos filmes e permite que o usuário veja informações como o título, sinopse, data de lançamento e a opção de marcar como favorito.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ **Funcionalidades**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 🗂️ Listagem de filmes disponíveis para alugar.
+- 🔍 Busca por filmes no catálogo.
+- ❤️ Adicionar ou remover filmes dos favoritos.
+- 🛒 Carrinho de compras para alugar filmes.
+- 🎬 Exibição de detalhes dos filmes como sinopse, poster e data de lançamento.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀  **Tecnologias Utilizadas**
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- ![Next.js](https://img.shields.io/badge/-Next.js-000?logo=next.js&logoColor=white&style=flat-square)  - Framework React para renderização do lado do servidor.
+- ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white&style=flat-square)  - Superset de JavaScript que adiciona tipagem estática.
+- ![TailwindCSS](https://img.shields.io/badge/-TailwindCSS-38B2AC?logo=tailwind-css&logoColor=white&style=flat-square) - Framework de CSS utilitário para estilização rápida.
+- ![Zod](https://img.shields.io/badge/-Zod-FF6B6B?logo=zod&logoColor=white&style=flat-square) - Biblioteca de validação de esquema.
+- ![React Hook Form](https://img.shields.io/badge/-React--Hook--Form-EC5990?logo=reacthookform&logoColor=white&style=flat-square) - Biblioteca para gerenciamento de formulários em React.
+- ![Lucide](https://img.shields.io/badge/-Lucide-61DAFB?logo=lucide&logoColor=white&style=flat-square) - Conjunto de ícones para React.
 
-## Learn More
+## 🌐 **Deploy**
 
-To learn more about Next.js, take a look at the following resources:
+O projeto está disponível para visualização em: [Locador](https://locador.vercel.app/).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ⚙️ **Como Rodar o Projeto**
+### Pré-requisitos:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Node.js versão 16+.
+- Gerenciador de pacotes Yarn ou NPM.
 
-## Deploy on Vercel
+### Passos para rodar localmente:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Clone o repositório:**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   ```bash
+   git clone https://github.com/usuario/locador.git
+2. **Navegue para o diretório do projeto:**
+
+   ```bash
+   cd locador
+3. **Instale as dependências:**
+    #### **Usando Yarn:**
+   ```bash
+   yarn install
+    ```
+    #### **Ou usando NPM:**
+    ```
+   npm install
+   ```
+4. **Configure as variáveis de ambiente:**
+Crie um arquivo .env.local na raiz do projeto e adicione as variáveis necessárias, como a URL da API de filmes:
+   ```bash
+   NEXT_PUBLIC_URL_API=https://api.themoviedb.org/3
+   NEXT_PUBLIC_API_KEY=your_api_key_here
+    ```
+5. **Rodar o projeto localmente:**
+     #### **Usando Yarn:**
+   ```bash
+   yarn dev
+    ```
+    #### **Ou usando NPM:**
+    ```
+   npm run dev
+   ```
+    O projeto estará disponível em: (http://localhost:3000)
+    
+## 📌 Melhorias Futuras
+- Implementar a funcionalidade de localização da loja mais próxima para retirada de filmes.
+- Adicionar sistema de recomendações de filmes.
+- Integração com um gateway de pagamento.
+
+## 🤝  Contribuições
+Contribuições são bem-vindas! Para contribuir, siga estas etapas:
+1. Faça um fork do projeto.
+2. Crie uma branch para sua nova feature (git checkout -b feature/MinhaFeature).
+3. Faça o commit das suas alterações (git commit -m 'Adicionei minha nova feature').
+4. Faça o push para sua branch (git push origin feature/MinhaFeature).
+5. Abra um Pull Request.

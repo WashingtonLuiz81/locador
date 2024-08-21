@@ -92,7 +92,7 @@ const Header = () => {
           </h1>
 
           <p className="text-sm text-gray-300">
-            A sua locadora
+            A sua locadora{' '}
             <span className="text-yellow-500 font-medium">Online</span>
           </p>
         </div>
