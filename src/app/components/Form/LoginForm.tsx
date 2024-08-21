@@ -6,13 +6,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
 import { Loader2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import Input from './FormInput'
 import { useRouter } from 'next/navigation'
 
-import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import PasswordInput from './PasswordInput'
+import { Button } from '../ui/button'
+import { toast } from 'react-toastify'
 
 const schema = z.object({
   username: z.string().nonempty('Usuário é obrigatório'),

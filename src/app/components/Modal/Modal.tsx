@@ -1,14 +1,19 @@
 import React from 'react'
 import { X } from 'lucide-react'
 
-interface ModalProps {
+interface LoginModalProps {
   isOpen: boolean
   onClose: () => void
   title: string
   children: React.ReactNode
 }
 
-const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
+export const LoginModal = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+}: LoginModalProps) => {
   if (!isOpen) return null
 
   return (
@@ -33,5 +38,3 @@ const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
     </div>
   )
 }
-
-export default Modal

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { User } from '@/types/auth'
+import { User } from '../core/model/User'
 
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null)
@@ -19,7 +19,6 @@ export const useAuth = () => {
 
       const data = await response.json()
 
-      // Verifica se o usuário existe
       const userData = data[0]
 
       if (userData) {

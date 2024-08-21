@@ -2,33 +2,44 @@
 
 import React, { useState } from 'react'
 import {
-  Heart,
   LogOut,
   Settings,
   ShoppingCart,
   User,
   Clapperboard,
   Loader2,
+  Trash2,
+  CircleOff,
 } from 'lucide-react'
-import Modal from '../Modal/Modal'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input, PasswordInput } from '../Form'
 import { Button } from '../ui/button'
 import { loginSchema } from './schemas'
+import { LoginModal, AsideModal, SuccessRentalModal } from '../Modal'
 import { useAuth } from '@/lib/auth'
+import { useCartStore } from '@/core/store/cartStore'
+import Image from 'next/image'
+import { AvatarIcon } from '@radix-ui/react-icons'
 
 type LoginFormInputs = z.infer<typeof loginSchema>
 
 const Header = () => {
   const [showUserMenu, setShowUserMenu] = useState(false)
+  const [showCart, setShowCart] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [loading, setLoading] = useState(false)
-  const { user, login, error } = useAuth()
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const { login } = useAuth()
+  const { cart, removeFromCart, clearCart } = useCartStore()
 
   const toggleUserMenu = () => {
     setShowUserMenu(!showUserMenu)
+  }
+
+  const toggleCart = () => {
+    setShowCart(!showCart)
   }
 
   const openLoginModal = () => {
@@ -38,21 +49,37 @@ const Header = () => {
     setShowLoginModal(false)
   }
 
-  // Integrar React Hook Form com Zod
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<LoginFormInputs>({
     resolver: zodResolver(loginSchema),
-    mode: 'onChange', // Validação em tempo real
+    mode: 'onChange',
   })
 
   const onSubmit = async (data: LoginFormInputs) => {
     setLoading(true)
     await login(data.username, data.password)
     console.log('Form data:', data)
-    // Aqui você pode adicionar a lógica para o login
+  }
+
+  const handleRemoveMovie = (id: number) => {
+    removeFromCart(id)
+  }
+
+  const handleClearCart = () => {
+    clearCart()
+  }
+
+  const handleConfirmRental = () => {
+    setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+    toggleCart()
+    handleClearCart()
   }
 
   return (
@@ -68,17 +95,27 @@ const Header = () => {
           </h1>
 
           <p className="text-sm text-gray-300">
-            A sua locadora{' '}
-            <span className="text-yellow-500 font-medium">Online</span>!
+            A sua locadora
+            <span className="text-yellow-500 font-medium">Online</span>
           </p>
         </div>
       </div>
 
       <nav className="flex items-center space-x-4">
-        <ShoppingCart
-          className="text-gray-300 text-2xl cursor-pointer"
-          aria-label="Carrinho de Compras"
-        />
+        <div className="relative cursor-pointer" onClick={toggleCart}>
+          <ShoppingCart
+            className="text-gray-300 text-2xl cursor-pointer"
+            aria-label="Carrinho de Compras"
+            aria-controls="cart"
+          />
+          {cart.length > 0 && (
+            <span className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center bg-red-500 text-white rounded-full px-2 text-xs">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75 spin-slow" />
+
+              {cart.length}
+            </span>
+          )}
+        </div>
 
         <div className="relative">
           <User
@@ -89,71 +126,153 @@ const Header = () => {
             onClick={toggleUserMenu}
           />
 
-          <div
-            id="user-menu"
-            role="dialog"
-            aria-modal="true"
-            className={`fixed top-0 right-0 h-full bg-white shadow-xl transform transition-transform ${
-              showUserMenu ? 'translate-x-0' : 'translate-x-full'
-            } w-64 z-50`}
-            tabIndex={-1}
+          <AsideModal
+            isOpen={showUserMenu}
+            onClose={() => setShowUserMenu(false)}
+            title={
+              <>
+                <AvatarIcon className="mr-2" />
+                <span className="text-gray-600 text-sm font-medium">
+                  Washington Luiz
+                </span>
+              </>
+            }
           >
-            <div className="p-4">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                Menu de Usuário
-              </h2>
+            <button
+              onClick={() => {}}
+              className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left flex items-center"
+              aria-label="Configurações"
+            >
+              <Settings className="mr-2" /> Configurações
+            </button>
 
-              <button
-                onClick={() => {}}
-                className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left flex items-center"
-                aria-label="Configurações"
-              >
-                <Settings className="mr-2" /> Configurações
-              </button>
+            <button
+              onClick={() => {
+                setShowUserMenu(false)
+                openLoginModal()
+              }}
+              className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left flex items-center"
+              aria-label="Login"
+            >
+              <User className="mr-2" /> Login
+            </button>
 
-              <button
-                onClick={() => {
-                  setShowUserMenu(false)
-                }}
-                className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left flex items-center"
-                aria-label="Favoritos"
-              >
-                <Heart className="mr-2" /> Favoritos
-              </button>
+            <button
+              onClick={() => {}}
+              className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left flex items-center"
+              aria-label="Logout"
+            >
+              <LogOut className="mr-2" /> Sair
+            </button>
+          </AsideModal>
 
-              <button
-                onClick={() => {
-                  toggleUserMenu()
-                  openLoginModal()
-                }}
-                className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left flex items-center"
-                aria-label="Login"
-              >
-                <User className="mr-2" /> Login
-              </button>
+          <AsideModal
+            isOpen={showCart}
+            widthClass="max-w-[400px]"
+            onClose={() => setShowCart(false)}
+            title={
+              <div className="flex items-center gap-2">
+                <ShoppingCart className="mr-2" /> Seu Carrinho
+              </div>
+            }
+          >
+            {cart.length === 0 ? (
+              <p className="flex items-center gap-3 text-gray-400 font-semibold text-base">
+                <CircleOff width={24} /> O carrinho está vazio.
+              </p>
+            ) : (
+              <>
+                <div className="overflow-y-auto max-h-[calc(512px-96px)] xl:max-h-[calc(512px-60px)] scrollbar">
+                  <div className="space-y-4 pr-2">
+                    {cart.map((movie, index) => (
+                      <div
+                        key={movie.id}
+                        className={`flex items-center justify-between ${cart.length === index + 1 ? '' : 'border-gray-300 border-b pb-4'}`}
+                      >
+                        <div className="flex items-start gap-4">
+                          <figure className="w-auto">
+                            <Image
+                              src={`${process.env.NEXT_PUBLIC_URL_IMAGES}${movie.poster_path}`}
+                              className="rounded-md w-28"
+                              width={112}
+                              height={250}
+                              alt={movie.title}
+                            />
+                          </figure>
 
-              <button
-                onClick={() => {}}
-                className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left flex items-center"
-                aria-label="Logout"
-              >
-                <LogOut className="mr-2" /> Sair
-              </button>
-            </div>
-          </div>
+                          <div className="flex flex-col flex-1 gap-3 text-gray-600">
+                            <span className="text-base font-semibold">
+                              {movie.title}
+                            </span>
 
-          {showUserMenu && (
-            <div
-              className="fixed inset-0 bg-black bg-opacity-50 z-40"
-              onClick={toggleUserMenu}
-              aria-label="Fechar modal"
-            ></div>
-          )}
+                            <p className="text-sm font-medium line-clamp-4">
+                              {movie.overview}
+                            </p>
+
+                            <div className="flex items-center justify-between gap-1">
+                              <span className="text-gray-900 text-lg font-bold">
+                                R$ 15,99
+                              </span>
+
+                              <Button
+                                onClick={() => handleRemoveMovie(movie.id)}
+                                className="flex items-center justify-start gap-1 hover:text-gray-900 bg-transparent text-gray-900 border-none shadow-none text-left p-0"
+                                aria-label="Remover filme"
+                              >
+                                <Trash2
+                                  width={18}
+                                  className="text-xs font-normal"
+                                />
+                                <span className="hidden xl:block">
+                                  Remover Filme
+                                </span>
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between my-4 sm:my-2">
+                  <span className="text-gray-900 text-lg font-semibold">
+                    Total:
+                  </span>
+                  <span className="text-gray-900 text-lg font-bold">
+                    R$ {cart.length * 15.99}
+                  </span>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <Button
+                    onClick={handleClearCart}
+                    className="flex items-center gap-2 bg-red-500 text-white h-10"
+                  >
+                    <Trash2 /> Limpar Carrinho
+                  </Button>
+
+                  <Button
+                    onClick={handleConfirmRental}
+                    className="bg-green-500 hover:bg-gray-600 text-white h-10"
+                  >
+                    Alugar Agora
+                  </Button>
+                </div>
+              </>
+            )}
+          </AsideModal>
         </div>
       </nav>
 
+      <SuccessRentalModal isOpen={isModalOpen} onClose={closeModal} />
+
       {showLoginModal && (
-        <Modal isOpen={showLoginModal} onClose={closeLoginModal} title="Login">
+        <LoginModal
+          isOpen={showLoginModal}
+          onClose={closeLoginModal}
+          title="Login"
+        >
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-10">
             <div>
               <div className="mt-1">
@@ -190,7 +309,7 @@ const Header = () => {
               Esqueci minha senha
             </span>
           </form>
-        </Modal>
+        </LoginModal>
       )}
     </header>
   )

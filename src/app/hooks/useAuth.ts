@@ -1,4 +1,4 @@
-import { User } from '@/types/auth'
+import { User } from '@/core/model'
 import { useState } from 'react'
 
 export const useAuth = () => {
@@ -10,15 +10,15 @@ export const useAuth = () => {
       const url = `${process.env.API_BASE_URL}?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
 
       const response = await fetch(url, {
-        method: 'GET', // Ou 'POST', dependendo do que a API espera
+        method: 'GET',
       })
 
       if (!response.ok) {
         throw new Error('Failed to fetch')
       }
 
-      const data = await response.json() // Convertendo a resposta para JSON
-      const userData = data[0] // Assumindo que o usuário será o primeiro item do array
+      const data = await response.json()
+      const userData = data[0]
 
       if (userData) {
         setUser(userData)

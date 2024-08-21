@@ -2,7 +2,7 @@ import React from 'react'
 import {
   Input as ShadcnInput,
   InputProps as ShadcnInputProps,
-} from '@/components/ui/input'
+} from '../../components/ui/input'
 
 export interface InputProps extends ShadcnInputProps {
   label?: string
