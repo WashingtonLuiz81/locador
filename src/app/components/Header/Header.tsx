@@ -18,7 +18,6 @@ import { Input, PasswordInput } from '../Form'
 import { Button } from '../ui/button'
 import { loginSchema } from './schemas'
 import { LoginModal, AsideModal, SuccessRentalModal } from '../Modal'
-import { useAuth } from '@/lib/auth'
 import { useCartStore } from '@/core/store/cartStore'
 import Image from 'next/image'
 import { AvatarIcon } from '@radix-ui/react-icons'
@@ -31,7 +30,6 @@ const Header = () => {
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [loading, setLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { login } = useAuth()
   const { cart, removeFromCart, clearCart } = useCartStore()
 
   const toggleUserMenu = () => {
@@ -60,7 +58,6 @@ const Header = () => {
 
   const onSubmit = async (data: LoginFormInputs) => {
     setLoading(true)
-    await login(data.username, data.password)
     console.log('Form data:', data)
   }
 
