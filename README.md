@@ -72,6 +72,7 @@ Crie um arquivo .env.local na raiz do projeto e adicione as variáveis necessár
 - Implementar a funcionalidade de localização da loja mais próxima para retirada de filmes.
 - Adicionar sistema de recomendações de filmes.
 - Integração com um gateway de pagamento.
+- Criar um backend para gerenciar um controle dos filmes alugados pelos usuários e autenticação.
 
 ## 🤝  Contribuições
 Contribuições são bem-vindas! Para contribuir, siga estas etapas:
