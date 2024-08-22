@@ -21,6 +21,7 @@ import { LoginModal, AsideModal, SuccessRentalModal } from '../Modal'
 import { useCartStore } from '@/core/store/cartStore'
 import Image from 'next/image'
 import { AvatarIcon } from '@radix-ui/react-icons'
+import { signIn } from 'next-auth/react'
 
 type LoginFormInputs = z.infer<typeof loginSchema>
 
@@ -58,7 +59,27 @@ const Header = () => {
 
   const onSubmit = async (data: LoginFormInputs) => {
     setLoading(true)
-    console.log('Form data:', data)
+    try {
+      const result = await signIn('credentials', {
+        redirect: false, // Não redirecionar automaticamente
+        username: data.username,
+        password: data.password,
+      })
+      console.log('Result: ', result)
+
+      if (result?.error) {
+        console.error('Login failed:', result.error)
+      } else if (result?.ok) {
+        // Login bem-sucedido, redirecionar ou fechar o modal
+        closeLoginModal()
+        // Você pode adicionar lógica adicional, como redirecionar para outra página
+        console.log('Login successful')
+      }
+    } catch (error) {
+      console.error('An error occurred during login:', error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleRemoveMovie = (id: number) => {
